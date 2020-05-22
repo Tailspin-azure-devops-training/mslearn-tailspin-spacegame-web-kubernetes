@@ -55,11 +55,7 @@ stages:
     steps:
     - download: current
       artifact: manifests
-    - task: AzureWebAppContainer@1
-      inputs:
-       appName: $(WebAppName)
-       azureSubscription: 'Resource Manager - Tailspin - Space Game'
-       imageName: $(RegistryName)/$(webRepository):$(build.buildId)
+  
     - task: KubernetesManifest@0
       displayName: Create imagePullSecret
       inputs:
@@ -82,4 +78,9 @@ stages:
          $(imagePullSecret)
         containers: |
          $(RegistryName)/$(webRepository):$(tag)
-         $(RegistryName)/$(leaderboardRepository):$(tag)
+         $(RegistryName)/$(leaderboardRepository):$(tag)  
+    - task: AzureWebAppContainer@1
+      inputs:
+       appName: $(WebAppName)
+       azureSubscription: 'Resource Manager - Tailspin - Space Game'
+       imageName: $(RegistryName)/$(webRepository):$(build.buildId)
